@@ -1,0 +1,1 @@
+$(window).scroll(fnThrottle(function(){$(window).scrollTop()>.5*$(window).height()?$("#rocket").addClass("show"):$("#rocket").removeClass("show")},1e3)),$("#rocket").click(function(){return $("#rocket").addClass("launch"),$("html, body").animate({scrollTop:0},1e3,function(){$("#rocket").removeClass("show launch")}),!1});
