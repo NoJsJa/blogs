@@ -674,33 +674,6 @@
     
     
     <entry>
-      <title>proxychains终端代理</title>
-      <link href="/blogs/2019/04/04/d04b08a2.html/"/>
-      <url>/blogs/2019/04/04/d04b08a2.html/</url>
-      
-        <content type="html"><![CDATA[<h3 id="proxychains安装">proxychains安装</h3><p><code>sudo apt install proxychains</code></p><h3 id="编辑proxychains配置">编辑proxychains配置</h3><p><code>vim /etc/proxychains.conf</code></p><h3 id="将socks4-127-0-0-1-9095改为">将socks4 127.0.0.1 9095改为</h3><p><code>socks5 127.0.0.1 1080</code></p><p>ps: 默认的socks4 127.0.0.1 9095是tor代理，而socks5 127.0.0.1 1080是shadowsocks的代理，proxychains.conf文件说明了代理配置格式,如下,这里根据自己使用的代理来配置就行了。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ProxyList format</span><br><span class="line"> 94 <span class="comment">#       type  ip  port  [user pass]</span></span><br><span class="line"> 95 <span class="comment">#       (values separated by &#x27;tab&#x27; or &#x27;blank&#x27;)</span></span><br><span class="line"> 96 <span class="comment">#</span></span><br><span class="line"> 97 <span class="comment">#       only numeric ipv4 addresses are valid</span></span><br><span class="line"> 98 <span class="comment">#</span></span><br><span class="line"> 99 <span class="comment">#</span></span><br><span class="line">100 <span class="comment">#        Examples:</span></span><br><span class="line">101 <span class="comment">#</span></span><br><span class="line">102 <span class="comment">#       socks5  192.168.67.78   1080    lamer   secret</span></span><br><span class="line">103 <span class="comment">#       http    192.168.89.3    8080    justu   hidden</span></span><br><span class="line">104 <span class="comment">#       socks4  192.168.1.49    1080</span></span><br><span class="line">105 <span class="comment">#       http    192.168.39.93   8080</span></span><br></pre></td></tr></table></figure><h3 id="使用方法">使用方法</h3><p>在需要代理的命令前加上 proxychains ，如：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">proxychains wget http://xxx.com/xxx.zip</span><br><span class="line">proxychains git <span class="built_in">clone</span> https://xxxxxxxxx.git</span><br></pre></td></tr></table></figure><p>npm设置http代理：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设本地代理端口为8002</span></span><br><span class="line">npm config <span class="built_in">set</span> proxy http://127.0.0.1:1081</span><br><span class="line">npm config <span class="built_in">set</span> https-proxy http://127.0.0.1:1081</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有用户密码的代理</span></span><br><span class="line">npm config <span class="built_in">set</span> proxy http://username:password@127.0.0.1:1081</span><br><span class="line">npm confit <span class="built_in">set</span> https-proxy http://username:password@127.0.0.1:1081</span><br></pre></td></tr></table></figure><p>npm设置socks5代理：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设本地socks5代理端口为1081</span></span><br><span class="line"><span class="comment"># 首先安装转换工具</span></span><br><span class="line">npm install -g http-proxy-to-socks</span><br><span class="line"><span class="comment"># 然后使用这个工具监听8002端口,支持http代理，然后所有8002的http代理数据都将转换成socks的代理数据发送到1081上</span></span><br><span class="line">hpts -s 127.0.0.1:1081 -p 8002</span><br><span class="line"><span class="comment"># 最后设置npm代理为8080</span></span><br><span class="line">npm config <span class="built_in">set</span> proxy http://127.0.0.1:8002</span><br><span class="line">npm config <span class="built_in">set</span> https-proxy http://127.0.0.1:8002</span><br></pre></td></tr></table></figure><p>查看删除代理</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npm config get</span><br><span class="line">  or</span><br><span class="line">npm config list</span><br><span class="line"></span><br><span class="line">npm config delete proxy</span><br><span class="line">  and</span><br><span class="line">npm config delete https-proxy</span><br></pre></td></tr></table></figure>]]></content>
-      
-      
-      <categories>
-          
-          <category> Linux </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> proxy </tag>
-            
-            <tag> shadowsocks </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>LinuxMint18日常软件安装配置</title>
       <link href="/blogs/2019/04/04/bf638b5c.html/"/>
       <url>/blogs/2019/04/04/bf638b5c.html/</url>
@@ -720,6 +693,33 @@
             <tag> linux </tag>
             
             <tag> mint </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>proxychains终端代理</title>
+      <link href="/blogs/2019/04/04/d04b08a2.html/"/>
+      <url>/blogs/2019/04/04/d04b08a2.html/</url>
+      
+        <content type="html"><![CDATA[<h3 id="proxychains安装">proxychains安装</h3><p><code>sudo apt install proxychains</code></p><h3 id="编辑proxychains配置">编辑proxychains配置</h3><p><code>vim /etc/proxychains.conf</code></p><h3 id="将socks4-127-0-0-1-9095改为">将socks4 127.0.0.1 9095改为</h3><p><code>socks5 127.0.0.1 1080</code></p><p>ps: 默认的socks4 127.0.0.1 9095是tor代理，而socks5 127.0.0.1 1080是shadowsocks的代理，proxychains.conf文件说明了代理配置格式,如下,这里根据自己使用的代理来配置就行了。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ProxyList format</span><br><span class="line"> 94 <span class="comment">#       type  ip  port  [user pass]</span></span><br><span class="line"> 95 <span class="comment">#       (values separated by &#x27;tab&#x27; or &#x27;blank&#x27;)</span></span><br><span class="line"> 96 <span class="comment">#</span></span><br><span class="line"> 97 <span class="comment">#       only numeric ipv4 addresses are valid</span></span><br><span class="line"> 98 <span class="comment">#</span></span><br><span class="line"> 99 <span class="comment">#</span></span><br><span class="line">100 <span class="comment">#        Examples:</span></span><br><span class="line">101 <span class="comment">#</span></span><br><span class="line">102 <span class="comment">#       socks5  192.168.67.78   1080    lamer   secret</span></span><br><span class="line">103 <span class="comment">#       http    192.168.89.3    8080    justu   hidden</span></span><br><span class="line">104 <span class="comment">#       socks4  192.168.1.49    1080</span></span><br><span class="line">105 <span class="comment">#       http    192.168.39.93   8080</span></span><br></pre></td></tr></table></figure><h3 id="使用方法">使用方法</h3><p>在需要代理的命令前加上 proxychains ，如：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">proxychains wget http://xxx.com/xxx.zip</span><br><span class="line">proxychains git <span class="built_in">clone</span> https://xxxxxxxxx.git</span><br></pre></td></tr></table></figure><p>npm设置http代理：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设本地代理端口为8002</span></span><br><span class="line">npm config <span class="built_in">set</span> proxy http://127.0.0.1:1081</span><br><span class="line">npm config <span class="built_in">set</span> https-proxy http://127.0.0.1:1081</span><br><span class="line"></span><br><span class="line"><span class="comment"># 有用户密码的代理</span></span><br><span class="line">npm config <span class="built_in">set</span> proxy http://username:password@127.0.0.1:1081</span><br><span class="line">npm confit <span class="built_in">set</span> https-proxy http://username:password@127.0.0.1:1081</span><br></pre></td></tr></table></figure><p>npm设置socks5代理：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 假设本地socks5代理端口为1081</span></span><br><span class="line"><span class="comment"># 首先安装转换工具</span></span><br><span class="line">npm install -g http-proxy-to-socks</span><br><span class="line"><span class="comment"># 然后使用这个工具监听8002端口,支持http代理，然后所有8002的http代理数据都将转换成socks的代理数据发送到1081上</span></span><br><span class="line">hpts -s 127.0.0.1:1081 -p 8002</span><br><span class="line"><span class="comment"># 最后设置npm代理为8080</span></span><br><span class="line">npm config <span class="built_in">set</span> proxy http://127.0.0.1:8002</span><br><span class="line">npm config <span class="built_in">set</span> https-proxy http://127.0.0.1:8002</span><br></pre></td></tr></table></figure><p>查看删除代理</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">npm config get</span><br><span class="line">  or</span><br><span class="line">npm config list</span><br><span class="line"></span><br><span class="line">npm config delete proxy</span><br><span class="line">  and</span><br><span class="line">npm config delete https-proxy</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> proxy </tag>
+            
+            <tag> shadowsocks </tag>
             
         </tags>
       
